@@ -1,4 +1,6 @@
 const User = require("../modles/user")
+const {v4:uuidv4} = require('uuid')  // this is a npm package where you will get unique id for token 
+const {setUser} = require("../service/auth")
 async function handleUserSignup(req,res){
     const {name,email,password}= req.body;
     await User.create({
@@ -18,6 +20,9 @@ async function handleUserLogin(req,res){
             error:"Invalid Username or Password",
         });
     }
+    const sessionId = uuidv4();
+    setUser(sessionId,user);
+    res.cookie("uid",sessionId);  // we uid is cookie name 
     return res.redirect("/");
 }
 
