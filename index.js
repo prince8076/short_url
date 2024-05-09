@@ -3,6 +3,7 @@ const {connectToMongoDB} = require('./connect')
 const urlRoute = require("./routes/url");
 const URL =require('./modles/url');
 const path = require('path');  // it is use for ejs for getting the path
+const staticRoute = require('./routes/staticRouter');
 
 const app = express();
 const PORT = 8001;
@@ -16,16 +17,25 @@ connectToMongoDB('mongodb://127.0.0.1:27017/short-url').then(()=>{console.log('m
 
 //  set ejs {view engine}
 app.set('view engine','ejs'); 
-app.set('views', path.resolve('./views/home')); // refer ejs all file
+app.set('views', path.resolve('./views')); // refer ejs all file 
 
 //middleware
-app.use(express.json()); // it will parse the body
+app.use(express.json()); // it will parse the body 
+app.use(express.urlencoded({extended:false}));  //
 
 
-app.get("/test",async (req,res)=>{
-    const allUrls = await URL.find({});  // serverside rendering is hard that why we will use EJS
-    return res.render('home'); // res.render('ejs file name)
-});
+// route
+app.use('/',staticRoute);
+
+
+// app.get("/test",async (req,res)=>{
+//     const allUrls = await URL.find({});   // it will give you all the url
+//     // serverside rendering is hard that why we will use EJS
+//     return res.render('home',{
+//         urls:allUrls   // urls is array and getting in our home.ejs 
+//         // we can render as much as variable we want
+//     }); // res.render('ejs file name)
+// });
     // return res.end(`  
     // <html>
     // <head></head>
@@ -42,7 +52,7 @@ app.get("/test",async (req,res)=>{
 // });
 app.use("/url",urlRoute); // for route
 
-app.get('/urls/:shortId',async (req,res)=>{
+app.get('/url/:shortId',async (req,res)=>{
     const shortId =req.params.shortId;
     const entry = await URL.findOneAndUpdate({shortId},{
         $push:{
