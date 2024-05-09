@@ -1,9 +1,15 @@
 const express = require("express");
 const {connectToMongoDB} = require('./connect')
-const urlRoute = require("./routes/url");
+
 const URL =require('./modles/url');
 const path = require('path');  // it is use for ejs for getting the path
+
+
+//Routes
+const urlRoute = require("./routes/url");
+const userRoute = require('./routes/user');
 const staticRoute = require('./routes/staticRouter');
+
 
 const app = express();
 const PORT = 8001;
@@ -24,8 +30,12 @@ app.use(express.json()); // it will parse the body
 app.use(express.urlencoded({extended:false}));  //
 
 
-// route
+// routes
+app.use("/url",urlRoute);
+app.use('/user',userRoute);
 app.use('/',staticRoute);
+
+
 
 
 // app.get("/test",async (req,res)=>{
@@ -50,7 +60,7 @@ app.use('/',staticRoute);
     // </body>
     // </html>`);
 // });
-app.use("/url",urlRoute); // for route
+
 
 app.get('/url/:shortId',async (req,res)=>{
     const shortId =req.params.shortId;

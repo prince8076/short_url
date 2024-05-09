@@ -10,5 +10,8 @@ router.get('/', async(req,res)=>{
         urls:allUrls // we can access url using locals.name here we have url
     })
 })
+router.get('/signup',(req,res)=>{
+    return res.render('signup');
+})
 
 module.exports= router;
