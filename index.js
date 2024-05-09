@@ -15,7 +15,7 @@ connectToMongoDB('mongodb://127.0.0.1:27017/short-url').then(()=>{console.log('m
  //db.users.find({}) find users
 
 //  set ejs {view engine}
-app.use('view engine','ejs'); 
+app.set('view engine','ejs'); 
 app.set('views', path.resolve('./views/home')); // refer ejs all file
 
 //middleware
