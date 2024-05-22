@@ -3,9 +3,15 @@ const router = express.Router();
 const URL =require('../modles/url');
 const { restrictTo } = require('../middleware/auth');
 
-
-
-router.get('/', restrictTo(['NORMAL']),async(req,res)=>{
+//adding admin
+router.get("/admin/urls",restrictTo(["ADMIN"]), async(req,res)=>{
+    // if(!req.user) return res.redirect('/login');
+    const allUrls = await URL.find({createdBy:req.user._id}); // we are find createdBy id
+    return res.render("home",{
+        urls:allUrls // we can access url using locals.name here we have url
+    })
+})
+router.get('/', restrictTo(["NORMAL","ADMIN"]),async(req,res)=>{
     // if(!req.user) return res.redirect('/login');
     const allUrls = await URL.find({createdBy:req.user._id}); // we are find createdBy id
     return res.render("home",{

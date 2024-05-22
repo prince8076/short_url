@@ -38,7 +38,7 @@ app.use(checkforauthentication);
 
 
 // routes
-app.use("/url",restrictTo(["NORMAL"]),urlRoute); //adding middleware for restriction
+app.use("/url",restrictTo(["NORMAL","ADMIN"]),urlRoute); //adding middleware for restriction
 app.use('/user',userRoute);
 app.use('/',staticRoute);
 
