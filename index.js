@@ -1,7 +1,8 @@
 const express = require("express");
 const {connectToMongoDB} = require('./connect')
 const cookieParser = require('cookie-parser')  // install the library for cookie parsing
-const {restrictToLoggedinUserOnly,checkAuth} = require('./middleware/auth')
+// const {restrictToLoggedinUserOnly,checkAuth} = require('./middleware/auth')
+const {checkforauthentication,restrictTo} = require('./middleware/auth');
 
 const URL =require('./modles/url');
 const path = require('path');  // it is use for ejs for getting the path
@@ -32,13 +33,14 @@ app.set('views', path.resolve('./views')); // refer ejs all file
 app.use(express.json()); // it will parse the body 
 app.use(express.urlencoded({extended:false}));  //
 app.use(cookieParser());
+app.use(checkforauthentication);
 
 
 
 // routes
-app.use("/url",restrictToLoggedinUserOnly,urlRoute); //adding middleware for restriction
+app.use("/url",restrictTo(["NORMAL"]),urlRoute); //adding middleware for restriction
 app.use('/user',userRoute);
-app.use('/',checkAuth,staticRoute);
+app.use('/',staticRoute);
 
 
 
