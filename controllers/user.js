@@ -27,8 +27,10 @@ async function handleUserLogin(req,res){
 
 //    stateless
     const token =  setUser(user); // it will give you token
-    res.cookie("uid",token);
+    // res.cookie("uid",token);
+    res.cookie("token",token);
     //Bearer Authentication
+    // return res.json({token})
     return res.redirect("/");
 }
 

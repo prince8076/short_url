@@ -20,6 +20,7 @@ function setUser(user){
     const payload = {
         _id: user._id,
         email:user.email,
+        role: user.role,
     };
     // console.log("payload : ",payload);
     return jwt.sign(payload,secretKey);

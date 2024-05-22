@@ -1,16 +1,20 @@
 const { getUser } = require('../service/auth')
 
 function checkforauthentication(req,res,next){
-    const authorizationHeaderValue = req.headers["authorization"]
-    console.log("authorizationHeaderValue :" ,authorizationHeaderValue)
+    const tokenCookie = req.cookies?.token;
+    // const authorizationHeaderValue = req.headers["authorization"]
+    // console.log("authorizationHeaderValue :" ,authorizationHeaderValue)
     req.user = null;
+    // if (
+    //     !authorizationHeaderValue || 
+    //     !authorizationHeaderValue.startsWith('Bearer')
+    // )   return next(); 
     if (
-        !authorizationHeaderValue || 
-        !authorizationHeaderValue.startsWith('Bearer')
+        !tokenCookie
     )   return next(); 
     // startsWith check the starting name here it is bearer
         
-        const token = authorizationHeaderValue.split('Bearer ')[1];
+        const token = tokenCookie;
         const user = getUser(token);
         req.user = user;
         return next();
